@@ -100,7 +100,7 @@ Hotel_Booking_system/
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Hotel_Booking_system.git
+git clone https://github.com/khusi2707/Hotel-Booking-Management.git
 cd Hotel_Booking_system
 ```
 
