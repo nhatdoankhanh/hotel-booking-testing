@@ -1,28 +1,12 @@
-# ── Python ──────────────────────────────────────────────────────────────
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-*.so
-*.egg
-*.egg-info/
-dist/
-build/
-.eggs/
+# ── Java / Maven ──────────────────────────────────────────────────────────
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+*.class
 
-# Virtual environment
-.venv/
-venv/
-env/
-ENV/
-
-# ── Environment / Secrets ────────────────────────────────────────────────
-.env
-.env.*
-!.env.example
-
-# ── Database ─────────────────────────────────────────────────────────────
+# ── Database (H2 file DB) ─────────────────────────────────────────────────
 *.db
+*.mv.db
+*.trace.db
 *.sqlite
 *.sqlite3
 

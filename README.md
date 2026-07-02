@@ -2,7 +2,7 @@
 
 A full-stack hotel booking platform built as a capstone project for the **Navikenz Internship**. Customers can browse hotels, book rooms, and make payments. Admins get a complete management dashboard.
 
-**Stack:** FastAPI · React · SQLite · JWT Auth
+**Stack:** Java 17 · Spring Boot 3 · React · H2 · JWT Auth
 
 ---
 
@@ -47,16 +47,19 @@ A full-stack hotel booking platform built as a capstone project for the **Navike
 | US-016 | Customer Management | Manage Customer Accounts | Admin |
 | US-017 | Admin Dashboard | View Stats & Recent Bookings | Admin |
 
+All 17 stories are implemented end to end — see [DOCUMENTATION.md](DOCUMENTATION.md) for exactly which class handles each one.
+
 ---
 
 ## Tech Stack
 
 | Layer | Technology |
 |---|---|
-| Backend | FastAPI 0.111, Python 3.10+ |
-| Database | SQLite (auto-created, no setup) |
-| ORM | SQLAlchemy 2.0 |
-| Auth | JWT via `python-jose`, bcrypt via `passlib` |
+| Backend | Java 17, Spring Boot 3.5 |
+| Database | H2 (file-based, auto-created, no setup) |
+| ORM | Spring Data JPA / Hibernate |
+| Auth | JWT via `jjwt`, password hashing via Spring Security `BCryptPasswordEncoder` |
+| API Docs | springdoc-openapi (Swagger UI) |
 | Frontend | React 18, Vite 5, React Router 6 |
 | HTTP Client | Axios |
 
@@ -66,26 +69,25 @@ A full-stack hotel booking platform built as a capstone project for the **Navike
 
 ```
 Hotel_Booking_system/
-├── backend/
-│   ├── .env.example          ← Copy to .env and fill in your SECRET_KEY
-│   ├── requirements.txt
-│   └── app/
-│       ├── main.py           ← FastAPI entry point, CORS config
-│       ├── database.py       ← SQLite connection & session factory
-│       ├── core/             ← JWT, bcrypt, auth guards (Depends)
-│       ├── models/           ← SQLAlchemy ORM models (7 tables)
-│       ├── schemas/          ← Pydantic request/response schemas
-│       ├── repositories/     ← All DB queries (repository pattern)
-│       ├── services/         ← Business logic layer
-│       └── routers/          ← REST endpoints
+├── backend/                         ← Java + Spring Boot REST API
+│   ├── pom.xml
+│   └── src/main/java/com/navikenz/hotelbooking/
+│       ├── entity/                  ← JPA entities (7 tables)
+│       ├── repository/              ← Spring Data JPA repositories
+│       ├── dto/                     ← Request/response DTOs
+│       ├── security/                ← JwtService, JwtAuthFilter
+│       ├── config/                  ← SecurityConfig, OpenApiConfig
+│       ├── service/ + service/impl/ ← Business logic layer
+│       ├── controller/              ← REST endpoints
+│       └── exception/               ← Custom exceptions + global handler
 │
 └── frontend/
     ├── package.json
     └── src/
-        ├── context/          ← AuthContext — global JWT state
-        ├── services/         ← Axios API wrappers (one per entity)
-        ├── components/       ← Navbar, ProtectedRoute
-        └── pages/            ← 13 pages (customer + admin)
+        ├── context/                 ← AuthContext — global JWT state
+        ├── services/                ← Axios API wrappers (one per entity)
+        ├── components/              ← Navbar, ProtectedRoute
+        └── pages/                   ← 13 pages (customer + admin)
 ```
 
 ---
@@ -94,7 +96,8 @@ Hotel_Booking_system/
 
 ### Prerequisites
 
-- Python 3.10+
+- Java 17 (JDK)
+- Maven (or use the bundled `mvnw` wrapper — no install needed)
 - Node.js 18+
 
 ### 1. Clone the repo
@@ -108,30 +111,18 @@ cd Hotel_Booking_system
 
 ```bash
 cd backend
-
-# Create and activate virtual environment
-python -m venv .venv
-.venv\Scripts\activate        # Windows
-# source .venv/bin/activate   # macOS / Linux
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Set up environment variables
-copy .env.example .env        # Windows
-# cp .env.example .env        # macOS / Linux
-# Edit .env and set a strong SECRET_KEY
-
-# Start the server
-uvicorn app.main:app --reload --port 8000
+./mvnw spring-boot:run        # macOS / Linux
+mvnw.cmd spring-boot:run      # Windows
 ```
 
-Backend runs at `http://localhost:8000`  
-Swagger docs at `http://localhost:8000/docs`
+Backend runs at `http://localhost:8000`
+Swagger docs at `http://localhost:8000/swagger-ui/index.html`
+
+An H2 database file (`backend/hotel_booking.mv.db`) is created automatically on first run — no setup needed.
 
 ### 3. Create the first admin account
 
-Open `http://localhost:8000/docs`, find `POST /auth/admin/register`, and send:
+Open `http://localhost:8000/swagger-ui/index.html`, find `POST /auth/admin/register`, and send:
 
 ```json
 {
@@ -141,7 +132,7 @@ Open `http://localhost:8000/docs`, find `POST /auth/admin/register`, and send:
 }
 ```
 
-> Only needed once — data is saved in `hotel_booking.db`.
+> Only needed once — data persists in `hotel_booking.mv.db`.
 
 ### 4. Frontend setup
 
@@ -177,7 +168,7 @@ Frontend runs at `http://localhost:5173`
 | Users | `GET/PUT /users/{id}` | Customer |
 | Users | `GET /users` · `DELETE /users/{id}` | Admin |
 
-Full interactive docs: `http://localhost:8000/docs`
+Full interactive docs: `http://localhost:8000/swagger-ui/index.html`
 
 ---
 
@@ -187,14 +178,14 @@ Full interactive docs: `http://localhost:8000/docs`
 React Frontend (localhost:5173)
         │  JWT in Authorization header (Axios)
         ▼
-FastAPI Backend (localhost:8000)
-  ┌─ Routers    ← HTTP endpoints + input validation (Pydantic)
-  ├─ Services   ← Business rules, availability checks, amount calc
-  ├─ Repos      ← All SQLAlchemy queries (repository pattern)
-  └─ Models     ← ORM table definitions
+Spring Boot Backend (localhost:8000)
+  ┌─ Controllers ← HTTP endpoints + request validation (Bean Validation)
+  ├─ Services    ← Business rules, availability checks, amount calc
+  ├─ Repositories← Spring Data JPA (repository pattern)
+  └─ Entities    ← JPA table definitions
         │
         ▼
-SQLite Database (hotel_booking.db)
+H2 Database (backend/hotel_booking.mv.db)
   users · admins · hotels · room_details
   booking_details · transactions · payments
 ```
@@ -218,17 +209,9 @@ booking_details ── payment ── transaction
 
 ---
 
-## Environment Variables
+## Configuration
 
-Copy `backend/.env.example` to `backend/.env`:
-
-```env
-SECRET_KEY=your_strong_secret_key_here
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=1440
-```
-
-> Never commit `.env` — it is already in `.gitignore`.
+All configuration lives in `backend/src/main/resources/application.properties` — JWT secret/expiry, H2 datasource, server port, Swagger paths. No `.env` file or manual setup required; sensible defaults are already checked in for local development.
 
 ---
 
@@ -236,10 +219,11 @@ ACCESS_TOKEN_EXPIRE_MINUTES=1440
 
 | Pattern | Where used |
 |---|---|
-| Layered Architecture | Router → Service → Repository → DB |
-| Repository Pattern | `repositories/` — single source for all DB queries |
-| DTO / Schema Pattern | `schemas/` — Pydantic separates API shape from DB model |
-| Dependency Injection | FastAPI `Depends()` for DB sessions and auth guards |
+| Layered Architecture | Controller → Service → Repository → Entity |
+| Repository Pattern | Spring Data JPA repositories — single source for all DB queries |
+| DTO Pattern | `dto/` — separates API shape from JPA entities |
+| Dependency Injection | Constructor injection (`@RequiredArgsConstructor`) throughout |
+| Global Exception Handler | `@RestControllerAdvice` maps exceptions to consistent HTTP responses |
 | Context API | `AuthContext.jsx` — global JWT state across all React pages |
 | Interceptor Pattern | `api.js` — Axios auto-attaches JWT to every request |
 
