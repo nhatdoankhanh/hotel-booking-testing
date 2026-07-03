@@ -8,5 +8,6 @@ import java.util.List;
 public interface RoomRepository extends JpaRepository<RoomDetails, Long> {
     List<RoomDetails> findByHotelId(Long hotelId);
     List<RoomDetails> findByHotelIdAndIsavailableTrue(Long hotelId);
+    boolean existsByHotelIdAndRoomNoIgnoreCase(Long hotelId, String roomNo);
     void deleteByHotelId(Long hotelId);
 }

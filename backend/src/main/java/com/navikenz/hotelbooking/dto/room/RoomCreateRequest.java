@@ -2,6 +2,7 @@ package com.navikenz.hotelbooking.dto.room;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ public class RoomCreateRequest {
     private String roomType;
 
     @NotNull
+    @Positive
     private Double ratePerDay;
 
     private Boolean isavailable = true;

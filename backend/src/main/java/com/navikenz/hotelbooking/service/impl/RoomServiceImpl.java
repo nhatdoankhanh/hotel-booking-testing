@@ -4,6 +4,7 @@ import com.navikenz.hotelbooking.dto.room.RoomCreateRequest;
 import com.navikenz.hotelbooking.dto.room.RoomResponse;
 import com.navikenz.hotelbooking.dto.room.RoomUpdateRequest;
 import com.navikenz.hotelbooking.entity.RoomDetails;
+import com.navikenz.hotelbooking.exception.BadRequestException;
 import com.navikenz.hotelbooking.exception.ResourceNotFoundException;
 import com.navikenz.hotelbooking.repository.HotelRepository;
 import com.navikenz.hotelbooking.repository.RoomRepository;
@@ -25,6 +26,9 @@ public class RoomServiceImpl implements RoomService {
         if (!hotelRepository.existsById(request.getHotelId())) {
             throw new ResourceNotFoundException("Hotel not found");
         }
+        if (roomRepository.existsByHotelIdAndRoomNoIgnoreCase(request.getHotelId(), request.getRoomNo())) {
+            throw new BadRequestException("Room number already exists for this hotel");
+        }
         RoomDetails room = RoomDetails.builder()
                 .hotelId(request.getHotelId())
                 .roomNo(request.getRoomNo())
@@ -39,7 +43,12 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomResponse updateRoom(Long roomId, RoomUpdateRequest request) {
         RoomDetails room = findRoom(roomId);
-        if (request.getRoomNo() != null) room.setRoomNo(request.getRoomNo());
+        if (request.getRoomNo() != null && !request.getRoomNo().equalsIgnoreCase(room.getRoomNo())) {
+            if (roomRepository.existsByHotelIdAndRoomNoIgnoreCase(room.getHotelId(), request.getRoomNo())) {
+                throw new BadRequestException("Room number already exists for this hotel");
+            }
+            room.setRoomNo(request.getRoomNo());
+        }
         if (request.getRoomType() != null) room.setRoomType(request.getRoomType());
         if (request.getRatePerDay() != null) room.setRatePerDay(request.getRatePerDay());
         if (request.getIsavailable() != null) room.setIsavailable(request.getIsavailable());

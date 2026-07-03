@@ -43,7 +43,7 @@ public class RoomController {
     }
 
     @PutMapping("/{roomId}")
-    public RoomResponse updateRoom(@PathVariable Long roomId, @RequestBody RoomUpdateRequest request) {
+    public RoomResponse updateRoom(@PathVariable Long roomId, @Valid @RequestBody RoomUpdateRequest request) {
         return roomService.updateRoom(roomId, request);
     }
 

@@ -4,6 +4,8 @@ import com.navikenz.hotelbooking.dto.user.UserResponse;
 import com.navikenz.hotelbooking.dto.user.UserUpdateRequest;
 import com.navikenz.hotelbooking.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -23,13 +25,23 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserResponse getUser(@PathVariable Long userId) {
+    public UserResponse getUser(@PathVariable Long userId, Authentication authentication) {
+        ensureSelfOrAdmin(userId, authentication);
         return userService.getUser(userId);
     }
 
     @PutMapping("/{userId}")
-    public UserResponse updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequest request) {
+    public UserResponse updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequest request, Authentication authentication) {
+        ensureSelfOrAdmin(userId, authentication);
         return userService.updateUser(userId, request);
+    }
+
+    private void ensureSelfOrAdmin(Long userId, Authentication authentication) {
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        if (!isAdmin && !userId.equals(authentication.getPrincipal())) {
+            throw new AccessDeniedException("You can only access your own account");
+        }
     }
 
     @DeleteMapping("/{userId}")
