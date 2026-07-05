@@ -6,6 +6,7 @@ import com.navikenz.hotelbooking.dto.booking.BookingStatusUpdateRequest;
 import com.navikenz.hotelbooking.service.BookingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,10 @@ public class BookingController {
     }
 
     @GetMapping("/{bookingId}")
-    public BookingResponse getBooking(@PathVariable Long bookingId) {
-        return bookingService.getBooking(bookingId);
+    public BookingResponse getBooking(@PathVariable Long bookingId, Authentication authentication) {
+        BookingResponse booking = bookingService.getBooking(bookingId);
+        ensureSelfOrAdmin(booking.getUserId(), authentication);
+        return booking;
     }
 
     @PostMapping
@@ -41,12 +44,22 @@ public class BookingController {
     }
 
     @PutMapping("/{bookingId}/cancel")
-    public BookingResponse cancelBooking(@PathVariable Long bookingId) {
+    public BookingResponse cancelBooking(@PathVariable Long bookingId, Authentication authentication) {
+        BookingResponse booking = bookingService.getBooking(bookingId);
+        ensureSelfOrAdmin(booking.getUserId(), authentication);
         return bookingService.cancelBooking(bookingId);
     }
 
     @PutMapping("/{bookingId}/status")
     public BookingResponse updateBookingStatus(@PathVariable Long bookingId, @RequestBody BookingStatusUpdateRequest request) {
         return bookingService.updateBookingStatus(bookingId, request.getStatus());
+    }
+
+    private void ensureSelfOrAdmin(Long userId, Authentication authentication) {
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        if (!isAdmin && !userId.equals(authentication.getPrincipal())) {
+            throw new AccessDeniedException("You can only access your own booking");
+        }
     }
 }

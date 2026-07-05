@@ -148,6 +148,42 @@ Frontend runs at `http://localhost:5173`
 
 ---
 
+## How to Use the App
+
+Once both servers are running, open `http://localhost:5173` in your browser. The database starts empty, so follow this order:
+
+### 1. Log in as admin
+Use the admin account you created in step 3 above (e.g. `admin@hotel.com` / `admin123`). The Admin toggle on the login page must be selected.
+
+### 2. Add a hotel
+Go to **Admin → Hotels** → click **`+ Add Hotel`** → fill in hotel name, city, and avg rate/night (required fields) → **Add**.
+
+### 3. Add rooms to that hotel
+Go to **Admin → Rooms** → click **`+ Add Room`** → pick the hotel you just created, set room number, room type, and rate/day → **Add**. Repeat for as many rooms/hotels as you want.
+
+### 4. Switch to a customer account
+Log out, then click **Register** to create a customer account (or use an incognito window to stay logged in as admin at the same time).
+
+### 5. Browse and book as a customer
+- Go to **Hotels**, optionally search by city, and click into a hotel to see its rooms.
+- Click **Book Now** on an available room, choose check-in/check-out dates and guest count, and confirm. The amount is calculated automatically (`rate/day × nights`).
+
+### 6. Manage the booking
+- Go to **My Bookings** to see the booking you just made.
+- Click **Pay Now** to complete payment (choose any payment method — Online/Card/UPI/Cash, all are simulated).
+- Click **Cancel** to cancel a confirmed booking — the room becomes available again immediately.
+
+### 7. Check it from the admin side
+Log back in as admin and check:
+- **Admin → Dashboard** — total hotels, bookings, users, and revenue at a glance.
+- **Admin → Bookings** — every booking across all customers, filterable by status.
+- **Admin → Payments** — every payment made, with total revenue.
+- **Admin → Users** — all registered customers, with the option to delete an account.
+
+That covers the full customer and admin flow end to end.
+
+---
+
 ## API Overview
 
 | Group | Endpoint | Access |
