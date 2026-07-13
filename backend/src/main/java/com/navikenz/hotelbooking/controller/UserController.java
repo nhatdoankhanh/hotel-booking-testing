@@ -3,9 +3,10 @@ package com.navikenz.hotelbooking.controller;
 import com.navikenz.hotelbooking.dto.user.UserResponse;
 import com.navikenz.hotelbooking.dto.user.UserUpdateRequest;
 import com.navikenz.hotelbooking.service.UserService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -14,10 +15,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
-@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public List<UserResponse> getAllUsers() {
@@ -37,8 +42,13 @@ public class UserController {
     }
 
     private void ensureSelfOrAdmin(Long userId, Authentication authentication) {
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        boolean isAdmin = false;
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                isAdmin = true;
+                break;
+            }
+        }
         if (!isAdmin && !userId.equals(authentication.getPrincipal())) {
             throw new AccessDeniedException("You can only access your own account");
         }

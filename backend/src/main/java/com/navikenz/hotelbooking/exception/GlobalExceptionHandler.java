@@ -10,7 +10,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import org.springframework.validation.FieldError;
+
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
@@ -44,10 +47,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
-        String message = ex.getBindingResult().getFieldErrors().stream()
-                .findFirst()
-                .map(e -> jsonFieldName(e.getField()) + ": " + e.getDefaultMessage())
-                .orElse("Validation failed");
+        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+        String message = "Validation failed";
+        if (!fieldErrors.isEmpty()) {
+            FieldError firstError = fieldErrors.get(0);
+            message = jsonFieldName(firstError.getField()) + ": " + firstError.getDefaultMessage();
+        }
         return build(HttpStatus.UNPROCESSABLE_ENTITY, message);
     }
 

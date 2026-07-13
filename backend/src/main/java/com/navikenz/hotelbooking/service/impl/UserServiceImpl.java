@@ -10,34 +10,40 @@ import com.navikenz.hotelbooking.exception.ResourceNotFoundException;
 import com.navikenz.hotelbooking.repository.UserRepository;
 import com.navikenz.hotelbooking.security.JwtService;
 import com.navikenz.hotelbooking.service.UserService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+    }
+
     @Override
     public User registerUser(UserRegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new BadRequestException("Email already registered");
         }
-        User user = User.builder()
-                .userName(request.getUserName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .mobile(request.getMobile())
-                .address(request.getAddress())
-                .role("customer")
-                .build();
+        User user = new User();
+        user.setUserName(request.getUserName());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setMobile(request.getMobile());
+        user.setAddress(request.getAddress());
+        user.setRole("customer");
         return userRepository.save(user);
     }
 
@@ -49,18 +55,22 @@ public class UserServiceImpl implements UserService {
             throw new BadCredentialsException("Invalid email or password");
         }
         String token = jwtService.generateToken(user.getUserId(), "customer");
-        return TokenResponse.builder()
-                .accessToken(token)
-                .tokenType("bearer")
-                .role("customer")
-                .userId(user.getUserId())
-                .userName(user.getUserName())
-                .build();
+        TokenResponse response = new TokenResponse();
+        response.setAccessToken(token);
+        response.setTokenType("bearer");
+        response.setRole("customer");
+        response.setUserId(user.getUserId());
+        response.setUserName(user.getUserName());
+        return response;
     }
 
     @Override
     public List<UserResponse> getAllUsers() {
-        return userRepository.findAll().stream().map(this::toResponse).toList();
+        List<UserResponse> responses = new ArrayList<>();
+        for (User user : userRepository.findAll()) {
+            responses.add(toResponse(user));
+        }
+        return responses;
     }
 
     @Override
@@ -89,13 +99,13 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserResponse toResponse(User user) {
-        return UserResponse.builder()
-                .userId(user.getUserId())
-                .userName(user.getUserName())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .mobile(user.getMobile())
-                .address(user.getAddress())
-                .build();
+        UserResponse response = new UserResponse();
+        response.setUserId(user.getUserId());
+        response.setUserName(user.getUserName());
+        response.setEmail(user.getEmail());
+        response.setRole(user.getRole());
+        response.setMobile(user.getMobile());
+        response.setAddress(user.getAddress());
+        return response;
     }
 }

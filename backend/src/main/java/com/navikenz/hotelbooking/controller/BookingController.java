@@ -5,19 +5,24 @@ import com.navikenz.hotelbooking.dto.booking.BookingResponse;
 import com.navikenz.hotelbooking.dto.booking.BookingStatusUpdateRequest;
 import com.navikenz.hotelbooking.service.BookingService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/bookings")
-@RequiredArgsConstructor
 public class BookingController {
 
     private final BookingService bookingService;
+
+    @Autowired
+    public BookingController(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
 
     @GetMapping
     public List<BookingResponse> getAllBookings() {
@@ -56,8 +61,13 @@ public class BookingController {
     }
 
     private void ensureSelfOrAdmin(Long userId, Authentication authentication) {
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        boolean isAdmin = false;
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                isAdmin = true;
+                break;
+            }
+        }
         if (!isAdmin && !userId.equals(authentication.getPrincipal())) {
             throw new AccessDeniedException("You can only access your own booking");
         }

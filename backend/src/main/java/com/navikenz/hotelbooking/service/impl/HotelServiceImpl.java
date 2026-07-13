@@ -8,32 +8,37 @@ import com.navikenz.hotelbooking.exception.ResourceNotFoundException;
 import com.navikenz.hotelbooking.repository.HotelRepository;
 import com.navikenz.hotelbooking.repository.RoomRepository;
 import com.navikenz.hotelbooking.service.HotelService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class HotelServiceImpl implements HotelService {
 
     private final HotelRepository hotelRepository;
     private final RoomRepository roomRepository;
 
+    @Autowired
+    public HotelServiceImpl(HotelRepository hotelRepository, RoomRepository roomRepository) {
+        this.hotelRepository = hotelRepository;
+        this.roomRepository = roomRepository;
+    }
+
     @Override
     public HotelResponse addHotel(HotelCreateRequest request) {
-        Hotel hotel = Hotel.builder()
-                .city(request.getCity())
-                .hotelName(request.getHotelName())
-                .address(request.getAddress())
-                .description(request.getDescription())
-                .avgRatePerDay(request.getAvgRatePerDay() != null ? request.getAvgRatePerDay() : 0.0)
-                .email(request.getEmail())
-                .phone1(request.getPhone1())
-                .phone2(request.getPhone2())
-                .website(request.getWebsite())
-                .build();
+        Hotel hotel = new Hotel();
+        hotel.setCity(request.getCity());
+        hotel.setHotelName(request.getHotelName());
+        hotel.setAddress(request.getAddress());
+        hotel.setDescription(request.getDescription());
+        hotel.setAvgRatePerDay(request.getAvgRatePerDay() != null ? request.getAvgRatePerDay() : 0.0);
+        hotel.setEmail(request.getEmail());
+        hotel.setPhone1(request.getPhone1());
+        hotel.setPhone2(request.getPhone2());
+        hotel.setWebsite(request.getWebsite());
         return toResponse(hotelRepository.save(hotel));
     }
 
@@ -62,7 +67,11 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public List<HotelResponse> getAllHotels() {
-        return hotelRepository.findAll().stream().map(this::toResponse).toList();
+        List<HotelResponse> responses = new ArrayList<>();
+        for (Hotel hotel : hotelRepository.findAll()) {
+            responses.add(toResponse(hotel));
+        }
+        return responses;
     }
 
     @Override
@@ -72,7 +81,11 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public List<HotelResponse> searchHotels(String city) {
-        return hotelRepository.findByCityContainingIgnoreCase(city).stream().map(this::toResponse).toList();
+        List<HotelResponse> responses = new ArrayList<>();
+        for (Hotel hotel : hotelRepository.findByCityContainingIgnoreCase(city)) {
+            responses.add(toResponse(hotel));
+        }
+        return responses;
     }
 
     private Hotel findHotel(Long hotelId) {
@@ -81,17 +94,17 @@ public class HotelServiceImpl implements HotelService {
     }
 
     private HotelResponse toResponse(Hotel hotel) {
-        return HotelResponse.builder()
-                .hotelId(hotel.getHotelId())
-                .city(hotel.getCity())
-                .hotelName(hotel.getHotelName())
-                .address(hotel.getAddress())
-                .description(hotel.getDescription())
-                .avgRatePerDay(hotel.getAvgRatePerDay())
-                .email(hotel.getEmail())
-                .phone1(hotel.getPhone1())
-                .phone2(hotel.getPhone2())
-                .website(hotel.getWebsite())
-                .build();
+        HotelResponse response = new HotelResponse();
+        response.setHotelId(hotel.getHotelId());
+        response.setCity(hotel.getCity());
+        response.setHotelName(hotel.getHotelName());
+        response.setAddress(hotel.getAddress());
+        response.setDescription(hotel.getDescription());
+        response.setAvgRatePerDay(hotel.getAvgRatePerDay());
+        response.setEmail(hotel.getEmail());
+        response.setPhone1(hotel.getPhone1());
+        response.setPhone2(hotel.getPhone2());
+        response.setWebsite(hotel.getWebsite());
+        return response;
     }
 }

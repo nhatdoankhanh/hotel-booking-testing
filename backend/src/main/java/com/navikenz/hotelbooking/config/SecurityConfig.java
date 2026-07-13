@@ -2,7 +2,7 @@ package com.navikenz.hotelbooking.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.navikenz.hotelbooking.security.JwtAuthFilter;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,11 +27,16 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final ObjectMapper objectMapper;
+
+    @Autowired
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter, ObjectMapper objectMapper) {
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.objectMapper = objectMapper;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

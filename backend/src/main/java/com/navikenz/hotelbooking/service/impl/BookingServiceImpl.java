@@ -10,20 +10,28 @@ import com.navikenz.hotelbooking.repository.BookingRepository;
 import com.navikenz.hotelbooking.repository.HotelRepository;
 import com.navikenz.hotelbooking.repository.RoomRepository;
 import com.navikenz.hotelbooking.service.BookingService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
     private final RoomRepository roomRepository;
     private final HotelRepository hotelRepository;
+
+    @Autowired
+    public BookingServiceImpl(BookingRepository bookingRepository, RoomRepository roomRepository,
+                               HotelRepository hotelRepository) {
+        this.bookingRepository = bookingRepository;
+        this.roomRepository = roomRepository;
+        this.hotelRepository = hotelRepository;
+    }
 
     @Override
     @Transactional
@@ -47,17 +55,16 @@ public class BookingServiceImpl implements BookingService {
         room.setIsavailable(false);
         roomRepository.save(room);
 
-        BookingDetails booking = BookingDetails.builder()
-                .hotelId(request.getHotelId())
-                .roomId(request.getRoomId())
-                .userId(userId)
-                .bookedFrom(request.getBookedFrom())
-                .bookedTo(request.getBookedTo())
-                .noOfAdults(request.getNoOfAdults() != null ? request.getNoOfAdults() : 1)
-                .noOfChildren(request.getNoOfChildren() != null ? request.getNoOfChildren() : 0)
-                .amount(amount)
-                .status("confirmed")
-                .build();
+        BookingDetails booking = new BookingDetails();
+        booking.setHotelId(request.getHotelId());
+        booking.setRoomId(request.getRoomId());
+        booking.setUserId(userId);
+        booking.setBookedFrom(request.getBookedFrom());
+        booking.setBookedTo(request.getBookedTo());
+        booking.setNoOfAdults(request.getNoOfAdults() != null ? request.getNoOfAdults() : 1);
+        booking.setNoOfChildren(request.getNoOfChildren() != null ? request.getNoOfChildren() : 0);
+        booking.setAmount(amount);
+        booking.setStatus("confirmed");
 
         return toResponse(bookingRepository.save(booking));
     }
@@ -86,7 +93,11 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingResponse> getAllBookings() {
-        return bookingRepository.findAll().stream().map(this::toResponse).toList();
+        List<BookingResponse> responses = new ArrayList<>();
+        for (BookingDetails booking : bookingRepository.findAll()) {
+            responses.add(toResponse(booking));
+        }
+        return responses;
     }
 
     @Override
@@ -96,7 +107,11 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingResponse> getBookingsByUser(Long userId) {
-        return bookingRepository.findByUserId(userId).stream().map(this::toResponse).toList();
+        List<BookingResponse> responses = new ArrayList<>();
+        for (BookingDetails booking : bookingRepository.findByUserId(userId)) {
+            responses.add(toResponse(booking));
+        }
+        return responses;
     }
 
     private BookingDetails findBooking(Long bookingId) {
@@ -105,17 +120,17 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private BookingResponse toResponse(BookingDetails booking) {
-        return BookingResponse.builder()
-                .bookingId(booking.getBookingId())
-                .hotelId(booking.getHotelId())
-                .roomId(booking.getRoomId())
-                .userId(booking.getUserId())
-                .bookedFrom(booking.getBookedFrom())
-                .bookedTo(booking.getBookedTo())
-                .noOfAdults(booking.getNoOfAdults())
-                .noOfChildren(booking.getNoOfChildren())
-                .amount(booking.getAmount())
-                .status(booking.getStatus())
-                .build();
+        BookingResponse response = new BookingResponse();
+        response.setBookingId(booking.getBookingId());
+        response.setHotelId(booking.getHotelId());
+        response.setRoomId(booking.getRoomId());
+        response.setUserId(booking.getUserId());
+        response.setBookedFrom(booking.getBookedFrom());
+        response.setBookedTo(booking.getBookedTo());
+        response.setNoOfAdults(booking.getNoOfAdults());
+        response.setNoOfChildren(booking.getNoOfChildren());
+        response.setAmount(booking.getAmount());
+        response.setStatus(booking.getStatus());
+        return response;
     }
 }

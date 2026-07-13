@@ -6,20 +6,26 @@ import com.navikenz.hotelbooking.dto.payment.PaymentDetailResponse;
 import com.navikenz.hotelbooking.service.BookingService;
 import com.navikenz.hotelbooking.service.PaymentService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/payments")
-@RequiredArgsConstructor
 public class PaymentController {
 
     private final PaymentService paymentService;
     private final BookingService bookingService;
+
+    @Autowired
+    public PaymentController(PaymentService paymentService, BookingService bookingService) {
+        this.paymentService = paymentService;
+        this.bookingService = bookingService;
+    }
 
     @GetMapping
     public List<PaymentDetailResponse> getAllPayments() {
@@ -42,8 +48,13 @@ public class PaymentController {
     }
 
     private void ensureSelfOrAdmin(Long userId, Authentication authentication) {
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        boolean isAdmin = false;
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                isAdmin = true;
+                break;
+            }
+        }
         if (!isAdmin && !userId.equals(authentication.getPrincipal())) {
             throw new AccessDeniedException("You can only access your own payment");
         }

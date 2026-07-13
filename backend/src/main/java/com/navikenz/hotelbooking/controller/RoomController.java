@@ -5,7 +5,7 @@ import com.navikenz.hotelbooking.dto.room.RoomResponse;
 import com.navikenz.hotelbooking.dto.room.RoomUpdateRequest;
 import com.navikenz.hotelbooking.service.RoomService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -14,10 +14,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/rooms")
-@RequiredArgsConstructor
 public class RoomController {
 
     private final RoomService roomService;
+
+    @Autowired
+    public RoomController(RoomService roomService) {
+        this.roomService = roomService;
+    }
 
     @GetMapping
     public List<RoomResponse> getAllRooms(@RequestParam(name = "hotel_id", required = false) Long hotelId) {

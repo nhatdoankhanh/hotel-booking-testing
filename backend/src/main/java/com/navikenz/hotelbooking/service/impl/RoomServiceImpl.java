@@ -9,17 +9,23 @@ import com.navikenz.hotelbooking.exception.ResourceNotFoundException;
 import com.navikenz.hotelbooking.repository.HotelRepository;
 import com.navikenz.hotelbooking.repository.RoomRepository;
 import com.navikenz.hotelbooking.service.RoomService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
     private final HotelRepository hotelRepository;
+
+    @Autowired
+    public RoomServiceImpl(RoomRepository roomRepository, HotelRepository hotelRepository) {
+        this.roomRepository = roomRepository;
+        this.hotelRepository = hotelRepository;
+    }
 
     @Override
     public RoomResponse addRoom(RoomCreateRequest request) {
@@ -29,14 +35,13 @@ public class RoomServiceImpl implements RoomService {
         if (roomRepository.existsByHotelIdAndRoomNoIgnoreCase(request.getHotelId(), request.getRoomNo())) {
             throw new BadRequestException("Room number already exists for this hotel");
         }
-        RoomDetails room = RoomDetails.builder()
-                .hotelId(request.getHotelId())
-                .roomNo(request.getRoomNo())
-                .roomType(request.getRoomType())
-                .ratePerDay(request.getRatePerDay())
-                .isavailable(request.getIsavailable() != null ? request.getIsavailable() : true)
-                .photo(request.getPhoto())
-                .build();
+        RoomDetails room = new RoomDetails();
+        room.setHotelId(request.getHotelId());
+        room.setRoomNo(request.getRoomNo());
+        room.setRoomType(request.getRoomType());
+        room.setRatePerDay(request.getRatePerDay());
+        room.setIsavailable(request.getIsavailable() != null ? request.getIsavailable() : true);
+        room.setPhoto(request.getPhoto());
         return toResponse(roomRepository.save(room));
     }
 
@@ -64,7 +69,11 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomResponse> getAllRooms() {
-        return roomRepository.findAll().stream().map(this::toResponse).toList();
+        List<RoomResponse> responses = new ArrayList<>();
+        for (RoomDetails room : roomRepository.findAll()) {
+            responses.add(toResponse(room));
+        }
+        return responses;
     }
 
     @Override
@@ -74,12 +83,20 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomResponse> getRoomsByHotel(Long hotelId) {
-        return roomRepository.findByHotelId(hotelId).stream().map(this::toResponse).toList();
+        List<RoomResponse> responses = new ArrayList<>();
+        for (RoomDetails room : roomRepository.findByHotelId(hotelId)) {
+            responses.add(toResponse(room));
+        }
+        return responses;
     }
 
     @Override
     public List<RoomResponse> getAvailableRooms(Long hotelId) {
-        return roomRepository.findByHotelIdAndIsavailableTrue(hotelId).stream().map(this::toResponse).toList();
+        List<RoomResponse> responses = new ArrayList<>();
+        for (RoomDetails room : roomRepository.findByHotelIdAndIsavailableTrue(hotelId)) {
+            responses.add(toResponse(room));
+        }
+        return responses;
     }
 
     private RoomDetails findRoom(Long roomId) {
@@ -88,14 +105,14 @@ public class RoomServiceImpl implements RoomService {
     }
 
     private RoomResponse toResponse(RoomDetails room) {
-        return RoomResponse.builder()
-                .roomId(room.getRoomId())
-                .hotelId(room.getHotelId())
-                .roomNo(room.getRoomNo())
-                .roomType(room.getRoomType())
-                .ratePerDay(room.getRatePerDay())
-                .isavailable(room.getIsavailable())
-                .photo(room.getPhoto())
-                .build();
+        RoomResponse response = new RoomResponse();
+        response.setRoomId(room.getRoomId());
+        response.setHotelId(room.getHotelId());
+        response.setRoomNo(room.getRoomNo());
+        response.setRoomType(room.getRoomType());
+        response.setRatePerDay(room.getRatePerDay());
+        response.setIsavailable(room.getIsavailable());
+        response.setPhoto(room.getPhoto());
+        return response;
     }
 }

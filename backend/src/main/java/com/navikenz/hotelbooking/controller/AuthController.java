@@ -10,7 +10,7 @@ import com.navikenz.hotelbooking.service.AdminService;
 import com.navikenz.hotelbooking.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -18,12 +18,17 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 @SecurityRequirements
 public class AuthController {
 
     private final UserService userService;
     private final AdminService adminService;
+
+    @Autowired
+    public AuthController(UserService userService, AdminService adminService) {
+        this.userService = userService;
+        this.adminService = adminService;
+    }
 
     @PostMapping("/register")
     public Map<String, Object> register(@Valid @RequestBody UserRegisterRequest request) {
