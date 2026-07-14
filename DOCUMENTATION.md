@@ -7,6 +7,8 @@ This document  walks through each of the 17 user stories one at a time: what it 
 
 **Status:** ✅ Complete — all 17 user stories are implemented and were manually re-verified against the running API before this was written.
 
+> Looking for something shorter? [README.md](README.md) is the quick overview, [TUTORIAL.md](TUTORIAL.md) is a click-by-click run guide, and [backend.md](backend.md) / [frontend.md](frontend.md) explain the code folder by folder. This file is the deep, story-by-story reference.
+
 ---
 
 ## Table of Contents
@@ -45,7 +47,7 @@ The **backend** (Java, Spring Boot) is a REST API. The **frontend** (React) is a
 ### Step 1 — Start the backend
 
 ```bash
-cd backend                    # from inside Hotel_Booking_system
+cd backend                    # from inside Hotel_booking_system
 .\mvnw.cmd spring-boot:run    # Windows (PowerShell) — the .\ is required, mvnw.cmd isn't on PATH
 mvnw.cmd spring-boot:run      # Windows (cmd.exe)
 ./mvnw spring-boot:run        # macOS / Linux
@@ -62,7 +64,7 @@ Go to `http://localhost:8000/swagger-ui/index.html`. This page lists every endpo
 In a **second terminal**:
 
 ```bash
-cd Hotel_Booking_system/frontend
+cd Hotel_booking_system/frontend
 npm install     # first time only
 npm run dev
 ```
@@ -88,7 +90,7 @@ You now have an admin account. Section 5 below walks you through using it.
 ## 3. Project Structure
 
 ```
-Hotel_Booking_system/
+Hotel_booking_system/
 ├── backend/                                       Java + Spring Boot REST API
 │   ├── pom.xml                                    Maven build file — all dependencies
 │   └── src/main/java/com/navikenz/hotelbooking/

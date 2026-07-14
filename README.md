@@ -49,6 +49,11 @@ A full-stack hotel booking platform built as a capstone project for the **Navike
 
 All 17 stories are implemented end to end — see [DOCUMENTATION.md](DOCUMENTATION.md) for exactly which class handles each one.
 
+Also in this repo:
+- [TUTORIAL.md](TUTORIAL.md) — step-by-step: run the app, then use it as Admin and as Customer.
+- [backend.md](backend.md) — what every backend folder/class does and why.
+- [frontend.md](frontend.md) — what every frontend folder/page does and why.
+
 ---
 
 ## Tech Stack
@@ -68,7 +73,7 @@ All 17 stories are implemented end to end — see [DOCUMENTATION.md](DOCUMENTATI
 ## Project Structure
 
 ```
-Hotel_Booking_system/
+Hotel_booking_system/
 ├── backend/                         ← Java + Spring Boot REST API
 │   ├── pom.xml
 │   └── src/main/java/com/navikenz/hotelbooking/
@@ -104,7 +109,7 @@ Hotel_Booking_system/
 
 ```bash
 git clone https://github.com/khusi2707/Hotel_booking_system.git
-cd Hotel_Booking_system
+cd Hotel_booking_system
 ```
 
 ### 2. Backend setup
@@ -258,7 +263,7 @@ All configuration lives in `backend/src/main/resources/application.properties` �
 | Layered Architecture | Controller → Service → Repository → Entity |
 | Repository Pattern | Spring Data JPA repositories — single source for all DB queries |
 | DTO Pattern | `dto/` — separates API shape from JPA entities |
-| Dependency Injection | Constructor injection (`@RequiredArgsConstructor`) throughout |
+| Dependency Injection | Plain constructor injection (`@Autowired`) throughout — no Lombok |
 | Global Exception Handler | `@RestControllerAdvice` maps exceptions to consistent HTTP responses |
 | Context API | `AuthContext.jsx` — global JWT state across all React pages |
 | Interceptor Pattern | `api.js` — Axios auto-attaches JWT to every request |
