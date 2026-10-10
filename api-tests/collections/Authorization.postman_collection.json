@@ -1,0 +1,127 @@
+{
+  "info": {
+    "_postman_id": "daad491f-1d78-44f1-b9c3-85a254cbc00c",
+    "name": "Authorization",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_collection_link": "https://go.postman.co/collection/58354356-daad491f-1d78-44f1-b9c3-85a254cbc00c?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "POST Hotel - Customer Token",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/hotels",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "hotels"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Room - Customer Token",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/rooms",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "rooms"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET User - Customer Token",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/users",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Payment - Customer Token",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/payments",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "payments"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

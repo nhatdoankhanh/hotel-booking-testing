@@ -1,0 +1,259 @@
+{
+  "info": {
+    "_postman_id": "1778c5b5-8ac8-461f-88fc-7cba307fe6ad",
+    "name": "Hotel Management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_collection_link": "https://go.postman.co/collection/58354356-1778c5b5-8ac8-461f-88fc-7cba307fe6ad?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET Hotel - Public user",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/hotels",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "hotels"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST New Hotel - Valid data",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{authorization_secret}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"city\": \"Mumbai\",\n  \"hotel_name\": \"hotel qa1\",\n  \"avg_rate_per_day\": 50\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/hotels",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "hotels"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Hotel - City Filter",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/hotels?city=Mumbai",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "hotels"
+          ],
+          "query": [
+            {
+              "key": "city",
+              "value": "Mumbai"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Hotel - City filter - Case insensitive",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/hotels?city=mumbai",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "hotels"
+          ],
+          "query": [
+            {
+              "key": "city",
+              "value": "mumbai"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Hotel - City filter - Substring",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/hotels?city=mum",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "hotels"
+          ],
+          "query": [
+            {
+              "key": "city",
+              "value": "mum"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST New Hotel - Customer token",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"city\": \"Mumbai\",\n  \"hotel_name\": \"Hotel QA 2\",\n  \"rate_per_day\": 50\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/hotels",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "hotels"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT Hotel - Partial  Update",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"avg_rate_per_day\": 60\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/hotels/65",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "hotels",
+            "65"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT Hotel - Not exists",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "POST Payment - Payment Completed - Transaction Success",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"booking_id\": 41,\n  \"payment_method\": \"card\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/payments",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "payments"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

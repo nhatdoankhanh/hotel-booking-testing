@@ -1,0 +1,432 @@
+{
+  "info": {
+    "_postman_id": "e6826beb-fdfa-4990-89ec-c02bd9c4a94d",
+    "name": "Booking Management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_collection_link": "https://go.postman.co/collection/58354356-e6826beb-fdfa-4990-89ec-c02bd9c4a94d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "POST New Booking - Valid Data",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_id\": 66,\n  \"room_id\": 34,\n  \"booked_from\": \"2026-10-11\",\n  \"booked_to\": \"2026-10-14\",\n  \"no_of_adults\": 2\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/bookings",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Booking - Total Amount - One Day",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_id\": 66,\n  \"room_id\": 36,\n  \"booked_from\": \"2026-10-11\",\n  \"booked_to\": \"2026-10-12\",\n  \"no_of_adults\": 2\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/bookings",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Booking - Total Amount - Many Days",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_id\": 66,\n  \"room_id\": 37,\n  \"booked_from\": \"2026-10-11\",\n  \"booked_to\": \"2026-10-14\",\n  \"no_of_adults\": 2\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/bookings",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Booking - Invalid Hotel ID",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_id\": 999999,\n  \"room_id\": 1,\n  \"booked_from\": \"2026-10-10\",\n  \"booked_to\": \"2026-10-12\",\n  \"no_of_adults\": 2\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/bookings",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Booking - Invalid Room ID",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_id\": 66,\n  \"room_id\": 9999,\n  \"booked_from\": \"2026-10-10\",\n  \"booked_to\": \"2026-10-12\",\n  \"no_of_adults\": 2\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/bookings",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Booking - Unavailable Room",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_id\": 66,\n  \"room_id\": 34,\n  \"booked_from\": \"2026-10-10\",\n  \"booked_to\": \"2026-10-12\",\n  \"no_of_adults\": 2\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/bookings",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Booking  - Invalid Time Range",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_id\": 66,\n  \"room_id\": 36,\n  \"booked_from\": \"2026-10-12\",\n  \"booked_to\": \"2026-10-11\",\n  \"no_of_adults\": 2\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/bookings",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Room - Booking - Isavailable",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/rooms/38",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "rooms",
+            "38"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Booking - Invalid Date",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Booking - Isavailable",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_id\": 66,\n  \"room_id\": 65,\n  \"booked_from\": \"2026-10-10\",\n  \"booked_to\": \"2026-10-11\",\n  \"no_of_adults\": 2\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/bookings",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Booking - My",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/bookings/my",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings",
+            "my"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Booking - Other Customer",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Token - Customer",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{customer_email}}\",\n  \"password\": \"{{customer_password}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/auth/login",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Booking - No Boking",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{authorization_secret}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/bookings/my",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings",
+            "my"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT Booking - Cancel Booking",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "info": {
+    "_postman_id": "344ff439-3615-41b2-8bd2-44efbf4ec310",
+    "name": "Admin DashBoard",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_collection_link": "https://go.postman.co/collection/58354356-344ff439-3615-41b2-8bd2-44efbf4ec310?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET No Hotel",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/hotels",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "hotels"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET No Booking",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/bookings",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET No User",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/users",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Total  Revenue",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/payments",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "payments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/bookings",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

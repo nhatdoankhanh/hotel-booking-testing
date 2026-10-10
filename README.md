@@ -1,6 +1,6 @@
 # Hotel Booking Management System
 
-This repository presents my software testing work for a hotel booking website: **Requirement Analysis, Test Scenarios, detailed Test Cases and UI Automation Testing**. The testing documents describe the analysis and test design, while the Selenium/TestNG project automates selected UI scenarios.
+This repository presents my software testing work for a hotel booking website: **Requirement Analysis, Test Scenarios, detailed Test Cases, API Testing with Postman and UI Automation Testing**. The testing documents describe the analysis and test design, while the Selenium/TestNG project automates selected UI scenarios.
 
 The website comes from [khusi2707/Hotel_booking_system](https://github.com/khusi2707/Hotel_booking_system), originally built as a capstone project for the **Navikenz Internship**. Customers can browse hotels, book rooms and make payments; admins have a management dashboard. My contributions focus on the testing documents and automation tests.
 
@@ -10,16 +10,21 @@ The website comes from [khusi2707/Hotel_booking_system](https://github.com/khusi
 
 ## Testing Project
 
-The testing work includes four parts:
+The testing work includes five parts:
 
 | Part | Purpose | Document |
 | --- | --- | --- |
 | Requirement Analysis | Analyze the website requirements as a basis for defining test scope | [Req-als.xlsx](docs/testing/Req-als.xlsx) |
 | Test Scenarios | Organize the situations and user flows to be tested | [Test-scenario.xlsx](docs/testing/Test-scenario.xlsx) |
 | Test Cases | Describe individual checks used to carry out testing | [Test-case.xlsx](docs/testing/Test-case.xlsx) |
+| API Testing (Postman) | Manually exercise API scenarios using eight Postman collections and a local environment template | [API Testing README](api-tests/README.md) |
 | UI Automation Testing | Automate selected scenarios using Selenium WebDriver and TestNG | [Automation README](automation-tests/README.md) |
 
 The three Excel documents were written as part of my testing work. The workflow is **Requirement Analysis → Test Scenarios → Test Cases → UI Automation**. The automated suite covers selected cases; it does not imply that every case in the Excel documents has been automated.
+
+### API Testing (Postman)
+
+The API testing work includes eight Postman collections with 66 saved requests: 57 have configured URLs and nine are incomplete drafts. Two login scripts store tokens; the collections currently contain no automated `pm.test` assertions. See the [API Testing README](api-tests/README.md) for import instructions, environment variables and preparation steps.
 
 ### Automation Testing (UI)
 

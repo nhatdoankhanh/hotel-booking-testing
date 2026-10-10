@@ -1,0 +1,314 @@
+{
+  "info": {
+    "_postman_id": "299c4ec8-fb7f-48c9-95f7-cea870603ff4",
+    "name": "Room Management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_collection_link": "https://go.postman.co/collection/58354356-299c4ec8-fb7f-48c9-95f7-cea870603ff4?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET All Room - Hotel ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/rooms?hotel_id=66",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "rooms"
+          ],
+          "query": [
+            {
+              "key": "hotel_id",
+              "value": "66"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Room - Available",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/rooms/available?hotel_id=66",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "rooms",
+            "available"
+          ],
+          "query": [
+            {
+              "key": "hotel_id",
+              "value": "66"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Room - Room ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/rooms/35",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "rooms",
+            "35"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST New Room - Valid Data",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_id\": 66,\n  \"room_no\": 202,\n  \"room_type\": \"Deluxe\",\n  \"rate_per_day\": 20\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/rooms",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "rooms"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Room - Hotel ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/rooms?hotel_id=66",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "rooms"
+          ],
+          "query": [
+            {
+              "key": "hotel_id",
+              "value": "66"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST New Room - Hotel ID - Not Exists",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_id\": 9999,\n  \"room_no\": 201,\n  \"room_type\": \"Deluxe\",\n  \"rate_per_day\": 20\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/rooms?hotel_id=9999",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "rooms"
+          ],
+          "query": [
+            {
+              "key": "hotel_id",
+              "value": "9999"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST New Room - Available",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_id\": 66,\n  \"room_no\": 301,\n  \"room_type\": \"Deluxe\",\n  \"rate_per_day\": 20\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/rooms",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "rooms"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT Room - Update All",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rate_per_day\": 25,\n  \"room_type\": \"Suite\",\n  \"isavailable\": \"false\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/rooms/35",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "rooms",
+            "35"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT Room - Partial Update",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rate_per_day\": 28\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BaseURL}}/rooms/36",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "rooms",
+            "36"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE Room",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}/rooms/36",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "rooms",
+            "36"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

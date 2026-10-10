@@ -16,6 +16,10 @@ This directory contains three documents I created while analyzing requirements a
 
 [Test-case.xlsx](Test-case.xlsx) contains detailed test cases for executing tests and checking results. It turns scenarios into individual checks that can be performed on the website.
 
+### API Testing with Postman
+
+The [API testing collections](../../api-tests/README.md) support manual API checks across authentication, authorization, hotels, rooms, bookings, payments, customers and dashboard data. The exports contain 66 saved requests, including nine drafts with empty URLs. They complement the detailed test cases and do not currently contain automated response assertions.
+
 ### UI Automation Testing
 
 The [automation suite](../../automation-tests/README.md) implements selected scenarios using Java, Selenium WebDriver and TestNG. It currently contains 25 UI test cases covering Authentication, Hotel Search, Hotel Management, Booking, Payment and two E2E flows.
