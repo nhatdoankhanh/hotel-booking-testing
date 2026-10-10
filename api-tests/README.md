@@ -8,17 +8,17 @@ Original website: [khusi2707/Hotel_booking_system](https://github.com/khusi2707/
 
 | Collection | Saved Requests | Requests with Empty URLs | Intended Coverage |
 | --- | ---: | ---: | --- |
-| [Authentication](collections/Authentication.postman_collection.json) | 11 | 3 | Registration, duplicate email, Customer/Admin login, wrong password and token scenarios |
+| [Authentication](collections/Authentication.postman_collection.json) | 8 | 0 | Registration, duplicate email, Customer/Admin login, wrong password and token scenarios |
 | [Authorization](collections/Authorization.postman_collection.json) | 4 | 0 | Customer access to hotel, room, user and payment endpoints |
-| [Hotel Management](<collections/Hotel Management.postman_collection.json>) | 9 | 1 | Hotel listing, city filters, hotel creation/update and one payment request |
+| [Hotel Management](<collections/Hotel Management.postman_collection.json>) | 9 | 0 | Hotel listing, city filters, hotel creation/update and one payment request |
 | [Room Management](<collections/Room Management.postman_collection.json>) | 10 | 0 | Room listing, availability, creation, update and deletion |
-| [Booking Management](<collections/Booking Management.postman_collection.json>) | 15 | 3 | Booking creation, date/ID/availability scenarios, amounts, booking history and cancellation draft |
-| [Payment Management](<collections/Payment Management.postman_collection.json>) | 6 | 1 | Payment creation, transaction, missing booking, amount and duplicate-payment scenarios |
-| [Customer Management](<collections/Customer Management.postman_collection.json>) | 6 | 1 | User listing, access control and deletion |
+| [Booking Management](<collections/Booking Management.postman_collection.json>) | 15 | 0 | Booking creation, date/ID/availability scenarios, amounts, booking history and cancellation |
+| [Payment Management](<collections/Payment Management.postman_collection.json>) | 6 | 0 | Payment creation, transaction, missing booking, amount and duplicate-payment scenarios |
+| [Customer Management](<collections/Customer Management.postman_collection.json>) | 6 | 0 | User listing, access control and deletion |
 | [Admin DashBoard](<collections/Admin DashBoard.postman_collection.json>) | 5 | 0 | Hotel, booking, user and payment data requests used to inspect dashboard information |
-| **Total** | **66** | **9** | **8 collections** |
+| **Total** | **63** | **0** | **8 collections** |
 
-The export contains **57 requests with configured URLs** and **9 incomplete requests**. A configured URL alone does not mean the request is ready for the current database or has passed testing. Names and collection placement are retained from the supplied exports, including draft requests and the payment request in Hotel Management.
+All **63 saved requests have configured URLs**. Three unnamed requests with empty URLs were removed from Authentication. Six named requests were completed using the test case document and backend controller mappings. A configured URL does not mean the request has passed testing; prepare the required tokens, IDs and database state before execution. The payment request originally exported under Hotel Management remains in that collection.
 
 ## Current Testing Status
 
@@ -57,6 +57,11 @@ api-tests/
 | `authorization_secret` | Legacy token variable referenced by several requests; set the token appropriate to the scenario |
 | `token` | Legacy token variable referenced by the hotel substring-search request |
 | `redacted_token` | Placeholder for any literal token removed during publication; fill only if a request needs it |
+| `second_customer_access_token` | Token for a second Customer account used to verify booking privacy |
+| `hotel_id`, `room_id` | Existing hotel and available room for the equal-date negative booking scenario |
+| `booking_equal_date` | Same check-in/check-out date; keep it today or in the future |
+| `booking_id` | Confirmed booking owned by the Customer used for cancellation |
+| `user_id` | Existing test user targeted by the Customer-token deletion authorization check |
 
 The environment is a template. Account credentials and access tokens are empty in the committed file. Set them locally in Postman and do not publish an environment export containing live credentials.
 
@@ -94,21 +99,28 @@ Requests that add, update, cancel or delete records affect the test database. Us
 
 For a Collection Runner run, select only requests that have been completed and prepared for the current environment. The collections are not yet a complete sequential API automation suite.
 
-## Incomplete Requests
+## Completed Requests and Test Case References
 
-The following requests have empty URLs in the original exports. Complete their method, URL, body and authorization before executing them; exclude them from collection runs until then.
+Six requests were completed by comparing [Test-case.xlsx](../docs/testing/Test-case.xlsx) with the backend controllers. The worksheet is `Sheet2`.
 
-| Collection | Request |
-| --- | --- |
-| Authentication | Three requests named `New Request` |
-| Booking Management | `POST Booking - Invalid Date` |
-| Booking Management | `GET Booking - Other Customer` |
-| Booking Management | `PUT Booking - Cancel Booking` |
-| Customer Management | `DELETE - User ID` |
-| Hotel Management | `PUT Hotel - Not exists` |
-| Payment Management | `GET All Payment` |
+| Collection | Request | Method and Endpoint | Test Case | Worksheet Row |
+| --- | --- | --- | --- | ---: |
+| Booking Management | POST Booking - Equal Check-In and Check-Out | `POST /bookings` | TC_BM_API_008 | 78 |
+| Booking Management | GET Booking - Other Customer | `GET /bookings/my` | TC_BM_API_012 | 82 |
+| Booking Management | PUT Booking - Cancel Booking | `PUT /bookings/{{booking_id}}/cancel` | TC_BM_API_014 | 84 |
+| Customer Management | DELETE User - Customer Token | `DELETE /users/{{user_id}}` | TC_USER_API_005 | 110 |
+| Hotel Management | PUT Hotel - Not exists | `PUT /hotels/9999` | TC_HM_API_009 | 38 |
+| Payment Management | GET All Payment | `GET /payments` | TC_PAY_API_007 | 99 |
 
-Some draft names indicate POST, PUT or DELETE while their saved method is GET. The original method is preserved here; verify it against the API documentation when completing the request.
+The three unnamed `New Request` entries with empty URLs in Authentication were deleted. Their original intent could not be recovered from the export. The configured `New Request` in Admin DashBoard was retained.
+
+For the booking privacy request, obtain a token for a second Customer account using `POST /auth/login` and put it in `second_customer_access_token`. If reusing the existing Customer login request, temporarily enter Customer 2 credentials, copy the returned token into this variable, then restore Customer 1 credentials and log in again to restore `customer_access_token`. Customer 1 must already have bookings for the privacy comparison to be meaningful.
+
+For the equal-date request, set valid `hotel_id` and `room_id` values and choose a `booking_equal_date` that is not in the past. Using the same date for check-in and check-out isolates the boundary condition in TC_BM_API_008.
+
+For cancellation, choose an existing confirmed booking belonging to the current Customer. For hotel 9999, confirm that the ID is absent. The user-deletion request is intentionally sent with a Customer token to verify access denial.
+
+Methods, routes, authorization roles and body fields were checked against the backend source. The backend was not running during this update, so these completed scenarios have not been executed against the API.
 
 ## Publication Changes
 
@@ -116,7 +128,7 @@ Some draft names indicate POST, PUT or DELETE while their saved method is GET. T
 - Registration/login credentials in request bodies were replaced with environment variable references.
 - Environment credentials and tokens were cleared; local setup variables were added.
 - Literal JWT values, if present, were replaced with a placeholder. Saved response bodies, headers and cookies are not included as execution evidence.
-- Request names, configured endpoint URLs, test data IDs/dates and existing token-storage scripts were preserved.
+- Existing configured requests and token-storage scripts were preserved. The six formerly incomplete requests were assigned methods, endpoints, authorization and required bodies based on their documented scenarios.
 
 ## Related Documents
 

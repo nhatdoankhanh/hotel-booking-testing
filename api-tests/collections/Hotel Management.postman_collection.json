@@ -214,8 +214,44 @@
     {
       "name": "PUT Hotel - Not exists",
       "request": {
-        "method": "GET",
-        "header": []
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseURL}}/hotels/9999",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "hotels",
+            "9999"
+          ]
+        },
+        "description": "Source: docs/testing/Test-case.xlsx, Sheet2 row 38 (TC_HM_API_009).\n\nEnsure hotel 9999 does not exist and use a valid Admin token. Expected: HTTP 404, Hotel not found.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"avg_rate_per_day\": 60\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
       },
       "response": []
     },

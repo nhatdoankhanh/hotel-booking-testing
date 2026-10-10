@@ -24,7 +24,7 @@ The three Excel documents were written as part of my testing work. The workflow 
 
 ### API Testing (Postman)
 
-The API testing work includes eight Postman collections with 66 saved requests: 57 have configured URLs and nine are incomplete drafts. Two login scripts store tokens; the collections currently contain no automated `pm.test` assertions. See the [API Testing README](api-tests/README.md) for import instructions, environment variables and preparation steps.
+The API testing work includes eight Postman collections with 63 saved requests, all with configured URLs. Three unnamed empty requests were removed, and six named requests were completed from the test case document and backend source. Two login scripts store tokens; the collections currently contain no automated `pm.test` assertions. See the [API Testing README](api-tests/README.md) for import instructions, environment variables and preparation steps.
 
 ### Automation Testing (UI)
 

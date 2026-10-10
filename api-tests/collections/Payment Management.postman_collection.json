@@ -191,9 +191,26 @@
       "request": {
         "method": "GET",
         "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
         "url": {
-          "raw": ""
-        }
+          "raw": "{{BaseURL}}/payments",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "payments"
+          ]
+        },
+        "description": "Source: docs/testing/Test-case.xlsx, Sheet2 row 99 (TC_PAY_API_007).\n\nUse a valid Admin token and a test database containing payments. Expected: HTTP 200 with all payments and their nested transaction data."
       },
       "response": []
     }

@@ -18,7 +18,7 @@ This directory contains three documents I created while analyzing requirements a
 
 ### API Testing with Postman
 
-The [API testing collections](../../api-tests/README.md) support manual API checks across authentication, authorization, hotels, rooms, bookings, payments, customers and dashboard data. The exports contain 66 saved requests, including nine drafts with empty URLs. They complement the detailed test cases and do not currently contain automated response assertions.
+The [API testing collections](../../api-tests/README.md) support manual API checks across authentication, authorization, hotels, rooms, bookings, payments, customers and dashboard data. The collections contain 63 saved requests with configured URLs. Six previously incomplete requests were completed from the test case document and backend source, and three unnamed empty requests were removed. They complement the detailed test cases and do not currently contain automated response assertions.
 
 ### UI Automation Testing
 

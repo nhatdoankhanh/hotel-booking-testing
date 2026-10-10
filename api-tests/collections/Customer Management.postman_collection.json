@@ -143,13 +143,31 @@
       "response": []
     },
     {
-      "name": "DELETE - User ID",
+      "name": "DELETE User - Customer Token",
       "request": {
-        "method": "GET",
+        "method": "DELETE",
         "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
         "url": {
-          "raw": ""
-        }
+          "raw": "{{BaseURL}}/users/{{user_id}}",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "users",
+            "{{user_id}}"
+          ]
+        },
+        "description": "Source: docs/testing/Test-case.xlsx, Sheet2 row 110 (TC_USER_API_005).\n\nUse a valid Customer token and set user_id to an existing test user. Expected: HTTP 403, Admin access required. Do not substitute an Admin token for this negative authorization scenario."
       },
       "response": []
     }

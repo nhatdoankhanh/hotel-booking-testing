@@ -277,12 +277,44 @@
       "response": []
     },
     {
-      "name": "POST Booking - Invalid Date",
+      "name": "POST Booking - Equal Check-In and Check-Out",
       "request": {
-        "method": "GET",
-        "header": [],
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
         "url": {
-          "raw": ""
+          "raw": "{{BaseURL}}/bookings",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings"
+          ]
+        },
+        "description": "Source: docs/testing/Test-case.xlsx, Sheet2 row 78 (TC_BM_API_008).\n\nUse an existing available room belonging to hotel_id. Both dates must be the same, with booked_from not in the past. Expected: HTTP 400, Invalid booking dates.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hotel_id\": {{hotel_id}},\n  \"room_id\": {{room_id}},\n  \"booked_from\": \"{{booking_equal_date}}\",\n  \"booked_to\": \"{{booking_equal_date}}\",\n  \"no_of_adults\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         }
       },
       "response": []
@@ -356,9 +388,27 @@
       "request": {
         "method": "GET",
         "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{second_customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
         "url": {
-          "raw": ""
-        }
+          "raw": "{{BaseURL}}/bookings/my",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings",
+            "my"
+          ]
+        },
+        "description": "Source: docs/testing/Test-case.xlsx, Sheet2 row 82 (TC_BM_API_012).\n\nUse a valid token for Customer 2, distinct from Customer 1 who owns the reference bookings. Expected: HTTP 200; the list contains only Customer 2 bookings and excludes Customer 1 bookings."
       },
       "response": []
     },
@@ -420,11 +470,30 @@
     {
       "name": "PUT Booking - Cancel Booking",
       "request": {
-        "method": "GET",
+        "method": "PUT",
         "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{customer_access_token}}",
+              "type": "string"
+            }
+          ]
+        },
         "url": {
-          "raw": ""
-        }
+          "raw": "{{BaseURL}}/bookings/{{booking_id}}/cancel",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "bookings",
+            "{{booking_id}}",
+            "cancel"
+          ]
+        },
+        "description": "Source: docs/testing/Test-case.xlsx, Sheet2 row 84 (TC_BM_API_014).\n\nSet booking_id to an existing confirmed booking owned by the Customer token. Expected: HTTP 200 and booking status cancelled. This request changes booking state."
       },
       "response": []
     }
