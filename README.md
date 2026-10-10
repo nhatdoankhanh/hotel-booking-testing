@@ -1,8 +1,34 @@
 # Hotel Booking Management System
 
-A full-stack hotel booking platform built as a capstone project for the **Navikenz Internship**. Customers can browse hotels, book rooms, and make payments. Admins get a complete management dashboard.
+This repository presents my software testing work for a hotel booking website: **Requirement Analysis, Test Scenarios, detailed Test Cases and UI Automation Testing**. The testing documents describe the analysis and test design, while the Selenium/TestNG project automates selected UI scenarios.
+
+The website comes from [khusi2707/Hotel_booking_system](https://github.com/khusi2707/Hotel_booking_system), originally built as a capstone project for the **Navikenz Internship**. Customers can browse hotels, book rooms and make payments; admins have a management dashboard. My contributions focus on the testing documents and automation tests.
 
 **Stack:** Java 17 · Spring Boot 3 · React · H2 · JWT Auth
+
+---
+
+## Testing Project
+
+The testing work includes four parts:
+
+| Part | Purpose | Document |
+| --- | --- | --- |
+| Requirement Analysis | Analyze the website requirements as a basis for defining test scope | [Req-als.xlsx](docs/testing/Req-als.xlsx) |
+| Test Scenarios | Organize the situations and user flows to be tested | [Test-scenario.xlsx](docs/testing/Test-scenario.xlsx) |
+| Test Cases | Describe individual checks used to carry out testing | [Test-case.xlsx](docs/testing/Test-case.xlsx) |
+| UI Automation Testing | Automate selected scenarios using Selenium WebDriver and TestNG | [Automation README](automation-tests/README.md) |
+
+The three Excel documents were written as part of my testing work. The workflow is **Requirement Analysis → Test Scenarios → Test Cases → UI Automation**. The automated suite covers selected cases; it does not imply that every case in the Excel documents has been automated.
+
+### Automation Testing (UI)
+
+This repository includes 25 UI automation test cases built with Java 17, Selenium WebDriver, TestNG and Maven. Coverage includes authentication, hotel search/management, booking, payment and two end-to-end flows.
+
+- [Setup, configuration and test execution](automation-tests/README.md)
+- [Testing documents and automated testcase list](docs/testing/README.md)
+
+The website is based on [khusi2707/Hotel_booking_system](https://github.com/khusi2707/Hotel_booking_system). The automation tests and QA documentation are additions to the original website project.
 
 ---
 

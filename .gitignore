@@ -30,3 +30,11 @@ Thumbs.db
 
 # ── Claude Code ───────────────────────────────────────────────────────────
 .claude/
+
+# Automation test build outputs
+automation-tests/target/
+automation-tests/reports/
+automation-tests/screenshots/
+
+# Local automation credentials
+automation-tests/src/test/resources/config.properties

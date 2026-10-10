@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="E2E UI Suite" parallel="false">
+    <test name="Customer End-to-End Flows">
+        <classes>
+            <class name="com.hotelbooking.e2e.E2ETest"/>
+        </classes>
+    </test>
+</suite>
